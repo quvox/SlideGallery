@@ -1,0 +1,5 @@
+pdfs = {};
+$("#slide-container")
+  .html("<%= j(render partial: 'get_slides', locals: {slidelist: @slideList}) %>");
+$("#sidebar-container")
+  .html("<%= escape_javascript(render partial: 'get_tags', locals: {searchkeyword: @searchKeyword, tags: @currentTags, selected: @selectedTags, owners: @ownersList}) %>");

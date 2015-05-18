@@ -1,0 +1,46 @@
+<% if slidelist != nil %>
+	<div class="row">
+		<% slidelist.each do |s| %>
+			<div class="col-sm-3 slidearea">
+				<div class="slideinfo_title">
+					Title:<%= s.title %>
+				</div>
+				<div class="slidedate">
+					<%= s.updated_at %>
+				</div>
+				<div id="pdfContainer_<%= s.id %>">
+				    <canvas id="the-canvas_<%= s.id %>" style="border:1px solid black; width:100%; height:100%" onclick="javascript: showLargeWindow(<%= s.id %>)"></canvas>
+				</div>
+				
+				<div class="btn-group">
+					<button type="button" class="btn btn-default btn-xs" aria-label="Prev Page" data-toggle="tooltip" title="<%= t('gallery.prevpage') %>" onclick="javascript: pagePrev(<%= s.id %>)">
+						<span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-default btn-xs" aria-label="Next Page" data-toggle="tooltip" title="<%= t('gallery.nextpage') %>" onclick="javascript: pageNext(<%= s.id %>)">
+						<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+					</button>
+				</div><!-- /.btn-group -->
+
+				<div class="btn-group pull-right">
+					<button type="button" class="btn btn-default btn-xs" aria-label="Enlarge" data-toggle="tooltip" title="<%= t('gallery.enlarge') %>" onclick="javascript: showLargeWindow(<%= s.id %>)">
+						<span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-default btn-xs" aria-label="Download" data-toggle="tooltip" title="<%= t('gallery.download') %>" onclick="javascript: downloadFile(<%= s.id %>)">
+						<span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-default btn-xs" aria-label="Edit" data-toggle="modal" data-target="#editModal" onclick="javascript: openEditModal(<%= s.id %>)">
+						<span class="glyphicon glyphicon-modal-window" aria-hidden="true" data-toggle="tooltip" title="<%= t('gallery.edit') %>"></span>
+					</button>
+				</div><!-- /.btn-group -->
+				<script language="javascript">
+					openPDF(<%= s.id %>);
+				</script>
+			</div><!-- /.slidearea -->
+		<% end %>
+	</div><!-- /.row -->
+<% end %>
+<div class="row">
+	<div class="col-sm-9">
+		<center><%= paginate(slidelist, :remote => true) %></center>
+	</div>
+</div>

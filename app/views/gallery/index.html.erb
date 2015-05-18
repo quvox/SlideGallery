@@ -1,0 +1,132 @@
+<div class="jumbotron">
+	<div class="container">
+		<h1><%= "#{SlideGallery::Application.config.title}" %></h1>
+        <p><%= t('gallery.appsubtitle') %></p>
+		<button type="button" class="btn btn-primary btn-lg" aria-label="add slide" data-toggle="modal" data-target="#uploadModal" onclick="javascript: openUploadModal();">
+			<%= t('gallery.addslide') %>
+		</button>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-9">
+			<div id="slide-container"><%= render partial: 'get_slides', locals: {slidelist: @slideList} %></div>
+		</div>
+		<div class="col-sm-3">
+			<div id="sidebar-container"><%= render partial: 'get_tags', locals: {searchkeyword: @searchKeyword, tags: @currentTags, selected: @selectedTags, owners: @ownersList} %></div>
+		</div>
+	</div><!-- /.row -->
+</div><!-- /.container -->
+
+<hr class="featurette-divider">
+
+<footer style="margin: 0 30px;">
+	<p class="pull-right"><a href="#"><%= t('gallery.backtotop') %></a></p>
+	<p>Copyright (C) 2015 Quvox  (<%= "#{SlideGallery::Application.config.title} ver. #{SlideGallery::Application.config.version}" %>)</p>
+</footer>
+
+
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><%= t('gallery.uploadtitle') %></h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-6">
+						<label class="control-label"><%= t('gallery.fileselection') %></label>
+						<div id="nodisplayupload"><input type="file" id="fileselection" name="filename" value="" style="display:none;"/></div>
+						<div class="input-group">
+							<a class="btn btn-default input-group-addon" id="fileicon" onclick="$('#fileselection').click();"><span class="glyphicon glyphicon-folder-open"></span></a>
+							<input type="text" id="filename" class="form-control" aria-describedby="fileicon" readonly="readonly" value="" onclick="$('#fileselection').click();"/>
+						</div>
+						<br>
+						<div id="dropbox" draggable="true">
+							<%= t('gallery.dropfile') %><br>(.pdf/.ppt/.pptx/.doc/.docx)
+						</div>
+					</div><!-- /.col-sm-6 -->
+					<div class="col-sm-6">
+						<label for="titlename" class="control-label"><%= t('gallery.modal.title') %></label>
+						<input type="text" class="form-control" name="titlename" value=""/>
+						<br>
+						<label for="tags" class="control-label"><%= t('gallery.modal.tags') %></label>
+						<input type="text" class="form-control" name="tags" value=""/>
+						<br>
+						<label for="user" class="control-label"><%= t('gallery.modal.user') %></label>
+						<input type="text" class="form-control" name="user" value=""/>
+						<br>
+						<label for="pass" class="control-label"><%= t('gallery.pass') %></label>
+						<input type="text" class="form-control" name="pass" value=""/>
+					</div><!-- /.col-sm-6 -->
+				</div><!-- /.row -->
+			</div><!-- /.modal-body -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><%= t('gallery.cancel') %></button>
+				<button type="button" id="upload-button" class="btn btn-primary ladda-button" data-style="zoom-in" onclick="javascript: uploadFile();">
+					<span class="ladda-label"><%= t('gallery.upload') %></span>
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><%= t('gallery.edittitle') %></h4>
+			</div>
+			<div class="modal-body">
+				<div class="modalarea" id="editmodal"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript: closeEditModal()"><%= t('gallery.cancel') %></button>
+				<button type="button" id="delete-button" class="btn btn-default ladda-button" data-style="zoom-in" onclick="javascript: deleteSlide();">
+					<span class="ladda-label"><%= t('gallery.delete') %></span>
+				</button>
+				<button type="button" id="update-button" class="btn btn-primary ladda-button" data-style="zoom-in" onclick="javascript: updateSlide();">
+					<span class="ladda-label"><%= t('gallery.update') %></span>
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="slideViewModal" tabindex="-1" role="dialog" aria-labelledby="slideViewModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="btn btn-default btn-xs" aria-label="Prev Page" data-toggle="tooltip" title="<%= t('gallery.prevpage') %>" onclick="javascript: pagePrev(0)">
+					<span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+				</button>
+				<button type="button" class="btn btn-default btn-xs" aria-label="Next Page" data-toggle="tooltip" title="<%= t('gallery.nextpage') %>" onclick="javascript: pageNext(0)">
+					<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+				</button>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<div id="largeslide">
+					<canvas id="large-canvas" style="border:1px solid black; width:100%; height:100%"></canvas>
+				</div>
+				<div align="left">
+					<div class="btn-group">
+						<button type="button" class="btn btn-default btn-xs" aria-label="Prev Page" data-toggle="tooltip" title="<%= t('gallery.prevpage') %>" onclick="javascript: pagePrev(0)">
+							<span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+						</button>
+						<button type="button" class="btn btn-default btn-xs" aria-label="Next Page" data-toggle="tooltip" title="<%= t('gallery.nextpage') %>" onclick="javascript: pageNext(0)">
+							<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+						</button>
+					</div><!-- /.btn-group -->
+				</div><!-- /.left -->
+			</div><!-- /.modal-body -->
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div style="display:none;">
+	<iframe id="download" name="download" height="0" width="0" ></iframe>
+</div>

@@ -1,0 +1,38 @@
+<div id="sidebarhead">
+	<a class="btn btn-primary btn-lg" href="" role="button" onclick="javascript: location.reload();" >Show all slides</a>
+</div>
+<hr>
+<div id="keysearch">
+	<%= t('gallery.keywords') %>:
+	<div class="input-group">
+		<input type="text" class="form-control" id="keywords" name="keywords" value="<%= searchkeyword %>">
+		<span class="input-group-btn">
+			<button class="btn btn-default" type="button" data-toggle="tooltip" title="<%= t('gallery.search') %>" onclick="javascript: narrowDownByKeyword();">
+					<span class="glyphicon glyphicon-search"></span>
+			</button>
+		</span>
+	</div><!-- /input-group -->
+</div>
+<hr>
+<div id="tagarea">
+	<%= t('gallery.tags') %>:&nbsp;
+	<% if selected != nil %>
+		<% selected.each do |stg| %>
+			<span class="label label-default"><%= stg %></span>
+		<% end %>
+	<% end %>
+	<% if tags != nil %>
+		<% tags.each do |tg| %>
+		  <span class="btn btn-default btn-xs" onclick="javascript: narrowDownByTag('<%= tg %>')"><%= tg %></span>
+		<% end %>
+	<% end %>
+</div>
+<hr>
+<div id="ownerarea">
+	<%= t('gallery.user') %>:&nbsp;
+	<% if owners != nil %>
+		<% owners.each do |ow| %>
+		  <span class="btn btn-default btn-xs" onclick="javascript: narrowDownByUser('<%= ow %>')"><%= ow %></span>
+		<% end %>
+	<% end %>
+</div>
