@@ -27,7 +27,6 @@ module SlideGallery
     config.assets.precompile += %w(*.eot *.svg *.ttf *.woff)
 
     config.title = "Slide Gallery"
-    config.version = '1.0.'+`git --git-dir="#{Rails.root.join(".git")}" --work-tree="#{Rails.root}" log -1 --date=short --format="%ad-%h"|sed 's/-/./g'`
-    #config.version = '1.0.0'
+    config.version = '1.0.'+`git --git-dir="#{Rails.root.join(".git")}" --work-tree="#{Rails.root}" log -1 --format="%h" |sed 's/-/./g'`
   end
 end

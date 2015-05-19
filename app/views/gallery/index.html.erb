@@ -23,7 +23,9 @@
 
 <footer style="margin: 0 30px;">
 	<p class="pull-right"><a href="#"><%= t('gallery.backtotop') %></a></p>
-	<p>Copyright (C) 2015 Quvox  (<%= "#{SlideGallery::Application.config.title} ver. #{SlideGallery::Application.config.version}" %>)</p>
+	<div style="cursor: pointer;" onclick="javascript: location.href='https://github.com/quvox/SlideGallery/'">
+		Copyright (C) 2015 Quvox  (<%= "#{SlideGallery::Application.config.title} ver. #{SlideGallery::Application.config.version}" %>)
+	</div>
 </footer>
 
 
